@@ -5,7 +5,7 @@
 #define GLITCH_X_LOW  -100
 #define GLITCH_X_HIGH 100
 #define GLITCH_FREQUENCY 50.0
-#define SAMPLE_COUNT 4
+#define SAMPLE_COUNT 13 // Lower this number to increase performance
 
 // Source
 // http://www.gamedev.net/topic/592001-random-number-generation-based-on-time-in-hlsl/
