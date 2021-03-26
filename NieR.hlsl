@@ -5,6 +5,7 @@
 #define GLITCH_X_LOW  -100
 #define GLITCH_X_HIGH 100
 #define GLITCH_FREQUENCY 50.0
+#define SAMPLE_COUNT 4
 
 // Source
 // http://www.gamedev.net/topic/592001-random-number-generation-based-on-time-in-hlsl/
@@ -75,17 +76,15 @@ float4 Blur(Texture2D input, float2 tex_coord, float2 glitch, float sigma)
 
     float4 color = { 0, 0, 0, 0 };
 
-    int sampleCount = 13;
-
-    for (int x = 0; x < sampleCount; x++)
+    for (int x = 0; x < SAMPLE_COUNT; x++)
     {
         float2 samplePos = { 0, 0 };
         float2 sampleGlitch;
 
-        samplePos.x = tex_coord.x + (x - sampleCount/2) * texelWidth;
-        for (int y = 0; y < sampleCount; y++)
+        samplePos.x = tex_coord.x + (x - SAMPLE_COUNT/2) * texelWidth;
+        for (int y = 0; y < SAMPLE_COUNT; y++)
         {
-            samplePos.y = tex_coord.y + (y - sampleCount/2) * texelHeight;
+            samplePos.y = tex_coord.y + (y - SAMPLE_COUNT/2) * texelHeight;
             sampleGlitch = samplePos - glitch;
 
             if (sampleGlitch.x <= 0 ||
@@ -94,7 +93,7 @@ float4 Blur(Texture2D input, float2 tex_coord, float2 glitch, float sigma)
                 sampleGlitch.y >= height) 
                     continue;
 
-            color += input.Sample(samplerState, samplePos - glitch) * Gaussian2D((x - sampleCount/2), (y - sampleCount/2), sigma);
+            color += input.Sample(samplerState, samplePos - glitch) * Gaussian2D((x - SAMPLE_COUNT/2), (y - SAMPLE_COUNT/2), sigma);
         }
     }
 
