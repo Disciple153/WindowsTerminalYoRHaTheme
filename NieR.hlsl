@@ -7,6 +7,10 @@
 #define GLITCH_FREQUENCY 50.0
 #define SAMPLE_COUNT 13 // Lower this number to increase performance
 
+#define SCALED_GAUSSIAN_SIGMA (1.25*Scale)
+
+static const float M_PI = 3.14159265f;
+
 // Source
 // http://www.gamedev.net/topic/592001-random-number-generation-based-on-time-in-hlsl/
 // Supposedly from the NVidia Direct3D10 SDK
@@ -39,6 +43,7 @@ struct NumberGenerator {
         float v = RANDOM_AM * seed;
         return low * ( 1.0f - v ) + high * v;
     }
+
     float GetSeededFloat(const uint seedVal, const float low, const float high)
     {
         seed = int(seedVal * 123456789);
@@ -56,10 +61,6 @@ cbuffer PixelShaderSettings {
   float2 Resolution;
   float4 Background;
 };
-
-#define SCALED_GAUSSIAN_SIGMA (1.25*Scale)
-
-static const float M_PI = 3.14159265f;
 
 float Gaussian2D(float x, float y, float sigma)
 {
@@ -135,7 +136,7 @@ float4 main(float4 pos : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 
     linePos = rand.GetSeededFloat(currentPeriod, 0.0, GLITCH_FREQUENCY);
 
-    if (linePos - (rand.GetRandomFloat(GLITCH_Y_LOW, GLITCH_Y_HIGH) * pixSize.y) < tex.y && tex.y < linePos)
+    if (linePos < tex.y && tex.y < linePos + (rand.GetRandomFloat(GLITCH_Y_LOW, GLITCH_Y_HIGH) * pixSize.y))
     {
         glitch.x = rand.GetRandomFloat(GLITCH_X_LOW, GLITCH_X_HIGH) * pixSize.x;
     }
