@@ -4,7 +4,7 @@
 #define GLITCH_Y_HIGH 5
 #define GLITCH_X_LOW  -100
 #define GLITCH_X_HIGH 100
-#define GLITCH_FREQUENCY 50.0
+#define GLITCH_FREQUENCY 25.0
 #define SAMPLE_COUNT 13 // Lower this number to increase performance
 
 #define SCALED_GAUSSIAN_SIGMA (1.25*Scale)
